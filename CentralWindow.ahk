@@ -40,18 +40,22 @@ GetMonitorIndexFromWindow(windowHandle) {
     return %monitorIndex%
 }
 
-CenterHalf() {
+CentralWindow(scale) {
 	WinGet activeWin, ID, A
     activeMon := GetMonitorIndexFromWindow(activeWin)
 
     SysGet, MonitorWorkArea, MonitorWorkArea, %activeMon%
 
-    width  := (MonitorWorkAreaRight - MonitorWorkAreaLeft)/2
+
+    screenWidth := MonitorWorkAreaRight - MonitorWorkAreaLeft
+    width  := screenWidth * scale
     height := MonitorWorkAreaBottom - MonitorWorkAreaTop
     posY   := MonitorWorkAreaTop
-    posX   := MonitorWorkAreaLeft + width/2
+    posX   := MonitorWorkAreaLeft + screenWidth * (1 - scale) / 2
 
     WinMove,A,,%posX%,%posY%,%width%,%height%
 }
 
-#C::CenterHalf()
+#^1::CentralWindow(1/2)
+#^2::CentralWindow(2/3)
+#^3::CentralWindow(3/4)
